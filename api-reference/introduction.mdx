@@ -1,28 +1,24 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Introduction"
+description: "AlertyAI API overview for tasks, reminders, and integrations"
 ---
-
-<Note>
-  If you are not planning to publish API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
 
 ## Welcome
 
-API documentation can be built using [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) or [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). This documentation currently uses the following OpenAPI specification.
+This reference documents AlertyAI endpoints used by clients and internal integrations.
+The schema includes task retrieval, task creation, task completion, and webhook delivery events.
 
 <Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
+  title="AlertyAI OpenAPI Spec"
+  icon="terminal"
+  href="/api-reference/openapi.json"
 >
   View the OpenAPI specification file
 </Card>
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All API endpoints use Bearer token authentication.
 
 ```json
 "security": [

@@ -1,17 +1,17 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "AlertyAI",
+  "name": "AlertyAI Docs",
   "colors": {
-    "primary": "#3CA2FA",
-    "light": "#EFF6FF",
-    "dark": "#0B1220"
+    "primary": "#1E9BFF",
+    "light": "#F4FAFF",
+    "dark": "#0A1525"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/logo.png",
   "navigation": {
     "tabs": [
       {
-        "tab": "Product Docs",
+        "tab": "Product",
         "groups": [
           {
             "group": "Overview",
@@ -63,21 +63,21 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Main Website",
+          "anchor": "Website",
           "href": "https://alertyai.com",
-          "icon": "book-open-cover"
+          "icon": "globe"
         },
         {
-          "anchor": "Blog",
-          "href": "https://alertyai.com/about",
-          "icon": "newspaper"
+          "anchor": "Play Store",
+          "href": "https://play.google.com/store/apps/details?id=com.alertyai.app",
+          "icon": "mobile-screen-button"
         }
       ]
     }
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/logo.png",
+    "dark": "/logo.png"
   },
   "navbar": {
     "links": [
@@ -88,8 +88,8 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Get AlertyAI",
-      "href": "https://alertyai.com"
+      "label": "Download App",
+      "href": "https://play.google.com/store/apps/details?id=com.alertyai.app"
     }
   },
   "contextual": {
@@ -101,7 +101,7 @@
   "footer": {
     "socials": {
       "x": "https://x.com/alertyai",
-      "github": "https://github.com/shashank7109/docs",
+      "github": "https://github.com/shashank7109/AlertyAI",
       "linkedin": "https://linkedin.com/company/alertyai"
     }
   }

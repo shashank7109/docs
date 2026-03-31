@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "AlertyAI API",
+    "description": "API specification for AlertyAI task and reminder workflows.",
     "license": {
       "name": "MIT"
     },
@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://api.alertyai.com"
     }
   ],
   "security": [
@@ -19,14 +19,14 @@
     }
   ],
   "paths": {
-    "/plants": {
+    "/tasks": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "description": "Returns all tasks available to the authenticated user.",
         "parameters": [
           {
             "name": "limit",
             "in": "query",
-            "description": "The maximum number of results to return",
+            "description": "Maximum number of tasks to return.",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -35,13 +35,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Task list response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Plant"
+                    "$ref": "#/components/schemas/Task"
                   }
                 }
               }
@@ -60,13 +60,13 @@
         }
       },
       "post": {
-        "description": "Creates a new plant in the store",
+        "description": "Creates a new task.",
         "requestBody": {
-          "description": "Plant to add to the store",
+          "description": "Task payload",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/NewTask"
               }
             }
           },
@@ -74,17 +74,17 @@
         },
         "responses": {
           "200": {
-            "description": "plant response",
+            "description": "Task created response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
+                  "$ref": "#/components/schemas/Task"
                 }
               }
             }
           },
           "400": {
-            "description": "unexpected error",
+            "description": "Unexpected error",
             "content": {
               "application/json": {
                 "schema": {
@@ -96,14 +96,14 @@
         }
       }
     },
-    "/plants/{id}": {
+    "/tasks/{id}": {
       "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+        "description": "Marks a task as completed based on the task ID.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of plant to delete",
+            "description": "ID of task to complete",
             "required": true,
             "schema": {
               "type": "integer",
@@ -113,11 +113,11 @@
         ],
         "responses": {
           "204": {
-            "description": "Plant deleted",
+            "description": "Task completed",
             "content": {}
           },
           "400": {
-            "description": "unexpected error",
+            "description": "Unexpected error",
             "content": {
               "application/json": {
                 "schema": {
@@ -131,22 +131,22 @@
     }
   },
   "webhooks": {
-    "/plant/webhook": {
+    "/tasks/webhook": {
       "post": {
-        "description": "Information about a new plant added to the store",
+        "description": "Sends reminder delivery and task state events.",
         "requestBody": {
-          "description": "Plant added to the store",
+          "description": "Webhook event payload",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/TaskEvent"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
+            "description": "Return 200 to acknowledge event receipt"
           }
         }
       }
@@ -154,41 +154,101 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
+      "Task": {
         "required": [
-          "name"
+          "id",
+          "title"
         ],
         "type": "object",
         "properties": {
-          "name": {
-            "description": "The name of the plant",
+          "id": {
+            "description": "Unique task ID",
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "description": "Task title",
             "type": "string"
           },
-          "tag": {
-            "description": "Tag to specify the type",
+          "description": {
+            "description": "Task details",
             "type": "string"
+          },
+          "dueAt": {
+            "description": "ISO-8601 due timestamp",
+            "type": "string"
+          },
+          "priority": {
+            "description": "Task priority",
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "status": {
+            "description": "Current task status",
+            "type": "string",
+            "enum": [
+              "pending",
+              "completed"
+            ]
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+      "NewTask": {
+        "required": [
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "description": "Task title",
+            "type": "string"
           },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
+          "description": {
+            "description": "Task details",
+            "type": "string"
+          },
+          "dueAt": {
+            "description": "ISO-8601 due timestamp",
+            "type": "string"
+          },
+          "priority": {
+            "description": "Task priority",
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
           }
-        ]
+        }
+      },
+      "TaskEvent": {
+        "required": [
+          "eventType",
+          "taskId"
+        ],
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string",
+            "enum": [
+              "task.created",
+              "task.completed",
+              "reminder.sent"
+            ]
+          },
+          "taskId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "occurredAt": {
+            "type": "string"
+          }
+        }
       },
       "Error": {
         "required": [
